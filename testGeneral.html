@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>testGeneral</title>
+</head>
+<body>
+    <p>统帅：</p>
+    <p id="command"></p>
+    <p>武力：</p>
+    <p id="force"></p>
+    <p>智力：</p>
+    <p id="intelligence"></p>
+    <p>政治：</p>
+    <p id="political"></p>
+    <button id="createNew">生成一个武将</button>
+    <button id="addCommand">增加统帅</button>
+    <button id="addForce">增加武力</button>
+    <button id="addIntelligence">增加智力</button>
+    <button id="addPolitical">增加政治</button>
+</body>
+<script src="js/generals.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script>
+    var general=null;
+    var addCommandInterval;
+    showGeneral=function () {
+        if (null != general){
+            $("#command").text(general.ability.command);
+            $("#force").text(general.ability.force);
+            $("#intelligence").text(general.ability.intelligence);
+            $("#political").text(general.ability.political);
+        }
+    }
+    $(document).ready(function(){
+        $("#createNew").click(function(){
+            general = General.createNew();
+            showGeneral();
+        });
+        $("#addCommand").click(function () {
+            general.addCommand();
+            showGeneral();
+        });
+        $("#addCommand").mousedown(function () {
+            addCommandInterval = setInterval(function () {
+                general.addCommand();
+                showGeneral();
+            }, 250);
+        });
+        $("#addCommand").mouseup(function () {
+            clearInterval(addCommandInterval);
+        });
+        $("#addCommand").mouseout(function () {
+            clearInterval(addCommandInterval);
+        });
+        $("#addForce").click(function () {
+            general.addForce();
+            showGeneral();
+        });
+        $("#addIntelligence").click(function () {
+            general.addIntelligence();
+            showGeneral();
+        });
+        $("#addPolitical").click(function () {
+            general.addPolitical();
+            showGeneral();
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>A Test File</title>
+</head>
+<body>
+<p id="testP">test</p>
+<canvas id="myCanvas" width="720" height="720"/>
+</body>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/soldier.js"></script>
+<script>
+    var c=document.getElementById("myCanvas");
+    var cxt=c.getContext("2d");
+    var soldierFactory=SoldierFactory.createNew();
+
+    checkReady=function () {
+        if (null  == soldierFactory.attackPics.hero.src){
+            alert("Load Waiting");
+            //window.setTimeout(checkReady, 500);
+        }else{
+            run();
+        }
+    }
+
+    run=function () {
+//        var hero = soldierFactory.createHero();
+//        hero.showAttackPic(cxt);
+//        var timeout = 0;
+//        for (var i=0; i < 10; ++i){
+//            timeout += 250;
+//            window.setTimeout(attack(hero), timeout);
+//        }
+    }
+
+    var hero = soldierFactory.createHero();
+    window.onclick=function () {
+        //alert("OK");
+        var timeout = 0;
+        for (var i=0; i < 10; ++i){
+            timeout += 250;
+            //window.setTimeout("run(0, 12, 0)", timeout);
+            window.setTimeout("attack(hero)", timeout);
+        }
+        hero.faceSouth();
+    }
+
+    attack=function (hero) {
+        cxt.fillStyle="#FFFFFF"
+        cxt.fillRect(0, 0, 720, 720);
+        hero.nextStep();
+        hero.showAttackPic(cxt);
+    }
+</script>
+</html>

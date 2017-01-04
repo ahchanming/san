@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>A Test File</title>
+</head>
+<body>
+<canvas id="myCanvas" width="720" height="720"/>
+</body>
+<script src="jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    var c=document.getElementById("myCanvas");
+    var cxt=c.getContext("2d");
+    var soldier=new Image();
+    var sx = 0;
+    var sy = 0;
+    var nowX=0;
+    var nowY=0;
+    soldier.src="soldier.jpg";
+    cxt.fillStyle="#66CC33";
+    cxt.strokeStyle = "#FFFF00"
+
+
+    var step=0;
+    soldier.onload=function () {
+        drawSoldier();
+    }
+    c.onclick=function (ev) {
+        lastX=nowX;
+        lastY=nowY;
+        nowX=ev.clientY;
+        nowY=ev.clientX;
+        timeout=0;
+        if (nowY > lastY){
+            while (nowY > lastY){
+                lastY += 16;
+                //alert(nowY + " " + lastY)
+                window.setTimeout("run(2, 0, 16)", timeout);
+                timeout += 250;
+            }
+            nowY = lastY;
+        }else{
+            while (nowY < lastY){
+                lastY -= 16;
+                window.setTimeout("run(1, 0, -16)", timeout);
+                timeout += 250;
+            }
+            nowY = lastY;
+        }
+        if (nowX > lastX){
+            while (nowX > lastX){
+                lastX += 12;
+                window.setTimeout("run(0, 12, 0)", timeout);
+                timeout += 250;
+            }
+        }else{
+            while (nowX < lastX){
+                lastX -= 12;
+                window.setTimeout("run(3, -12, 0)", timeout);
+                timeout += 250;
+            }
+        }
+        nowX = lastX;
+    }
+    drawSoldier=function () {
+        cxt.drawImage(soldier, step * 48, 0, 48, 64, 0, sy, 48, 64);
+    }
+    drawSoldier2=function () {
+        cxt.drawImage(soldier, step * 48, 64 * 2, 48, 64, sx, 0, 48, 64);
+    }
+    drawSoldier3=function (face) {
+        cxt.drawImage(soldier, step * 48, face * 64, 48, 64, sx, sy, 48, 64);
+    }
+    cleanAll=function () {
+        cxt.fillRect(0,0,720,720);
+        for (var i=0; i<15; ++i){
+            cxt.beginPath();
+            cxt.moveTo(0, i * 48);
+            cxt.lineTo(720, i * 48);
+            cxt.moveTo(i * 48, 0);
+            cxt.lineTo(i * 48, 720);
+            cxt.stroke();
+        }
+    }
+    run=function (face, dx, dy) {
+        cleanAll();
+        step=(step + 1)%4;
+        sy += dx;
+        sx += dy;
+        drawSoldier3(face);
+    }
+
+</script>
+</html>
