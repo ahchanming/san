@@ -45,11 +45,11 @@
         } else {
             window.bottomLineText = text;
         }
-
         redrawMeme(window.imageSrc, window.topLineText, window.bottomLineText);
     }
 
     var picData = null;
+    var isBackGroud = null;
     function getPointColor(ctx, image, x, y){
         var pos = y * image.width * 4 + x * 4;
         var red = picData[pos + 0]
@@ -66,6 +66,19 @@
             return false;
         }
     }
+
+    function checkNeighbor(x, y){
+        var totalY = 0;
+        for (var i = Math.max(0, x -10); i < x; ++i){
+            totalY += isBackGroud[i][y];
+        }
+        var totalX = 0;
+        for (var i = Math.max(0, y - 10); i < y; ++i){
+            totalX += isBackGroud[x][i];
+        }
+        return Math.min(10, y) * 0.4 <= totalX || Math.min(10, x) * 0.4 <= totalY;
+    }
+
     function redrawMeme(image, topLine, bottomLine) {
         // Get Canvas2DContext
         var canvas = document.querySelector('canvas');
@@ -73,13 +86,20 @@
         if (image != null){
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
             picData = ctx.getImageData(0, 0, image.width, image.height).data
+            isBackGroud = new Array(canvas.width)
+            for (var i = 0 ; i < image.width; ++i){
+                isBackGroud[i] = new Array(image.height)
+            }
             ctx.fillStyle = "blue"
             var color =getPointColor(ctx, image, 10, 10)
             for (var i = 0; i < image.width; ++i){
                 for (var j = 0; j < image.height; ++j){
                     var picColor = getPointColor(ctx, image, i, j)
-                    if (compareColor(color[0], color[1], color[2], picColor[0], picColor[1], picColor[2])){
+                    if (compareColor(color[0], color[1], color[2], picColor[0], picColor[1], picColor[2]) && checkNeighbor(i, j)){
+                        isBackGroud[i][j] = 1;
                         ctx.fillRect(i, j ,1, 1)
+                    }else{
+                        isBackGroud[i][j] = 0;
                     }
                 }
             }
