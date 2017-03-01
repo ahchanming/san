@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>番茄</title>
+</head>
+<body>
+<div>
+    <canvas id="myCanvas" width="720" height="444"/>
+</div>
+<div>
+    <button id="startButton" type="button">start!</button>
+    <audio id="workVidio" loop="loop">
+        <source src="vidio/dida.mp3" />
+        does not support
+    </audio>
+</div>
+</body>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $("#myCanvas").click(function(){
+            alert("HaHaHa");
+        })
+    })
+
+    var c=document.getElementById("myCanvas");
+    var cxt=c.getContext("2d");
+    cxt.fillStyle="#cc6972";
+    cxt.fillRect(0,0,720,720);
+    cxt.fillStyle="#FFFFFF"
+    cxt.font="100px Verdana";
+    cxt.fillText("25:00", 200, 150);
+    cxt.font="36px Impact";
+    cxt.fillText("CANVAS MEMES", 200, 300)
+    cxt.lineWidth=3;
+    cxt.strokeText("CANVAS MEMES", 200, 300)
+    cxt.fillRect(10, 10, 1, 1)
+    var ti;
+    var work;
+    $("#startButton").click(function () {
+        ti = 25 * 60;
+        start();
+    })
+
+    draw=function (str) {
+        cxt.fillStyle="#cc6972";
+        cxt.fillRect(0,0,720,720);
+        cxt.fillStyle="#FFFFFF"
+        cxt.font="100px Verdana";
+        cxt.fillText(str, 200, 150);
+    }
+
+    start=function () {
+        var myVido = document.getElementById("workVidio");
+        myVido.play();
+        work = window.setInterval(function () {
+            if (ti < 0){
+                window.clearInterval(work)
+            }
+            mm = Math.floor(ti / 60);
+            ss = Math.floor(ti % 60);
+            if (mm < 10){
+                mm = "0" + mm;
+            }
+            if (ss < 10){
+                ss ="0" + ss;
+            }
+            timeStr = mm + ":" + ss;
+            draw(timeStr);
+            ti -= 1;
+        }, 1000)
+    }
+
+    var mask_div = document.createElement('div');
+    mask_div.id = 'mask_div1';
+    mask_div.appendChild(document.createTextArea());
+    mask_div.style.position = "absolute";
+    mask_div.style.left =  '400px';
+    mask_div.style.top =  '300px';
+    mask_div.style.overflow = "hidden";
+    mask_div.style.zIndex = "9999";
+    mask_div.style.opacity = 0.3;
+    mask_div.style.mozUserSelect = "none";
+    mask_div.style.pointerEvents = "none";
+    document.body.appendChild(mask_div);
+</script>
+</html>
